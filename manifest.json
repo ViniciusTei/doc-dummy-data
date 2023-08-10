@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Doc dummy data",
+  "description": "Fetch data from 4dev to fill form",
+  "version": "0.1",
+  "content_scripts": [
+    {
+      "js": ["scripts/app.js"],
+      "matches": [
+        "https://developer.chrome.com/docs/extensions/*",
+        "https://developer.chrome.com/docs/webstore/*",
+        "https://app.casamentonobrasil.com.br/*",
+        "http://localhost:5000/*"
+      ]
+    }
+  ]
+}
