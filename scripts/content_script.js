@@ -1,5 +1,3 @@
-window.addEventListener('load', main, false)
-
 const url = 'https://www.4devs.com.br/ferramentas_online.php'
 const config = {
   headers: {
@@ -57,3 +55,4 @@ async function main() {
 
   gerarDados.gerarEmpresa()
 }
+
