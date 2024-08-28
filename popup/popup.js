@@ -16,7 +16,7 @@ const defaultParams = {
     acao: 'gerar_empresa',
     pontuaca: 'S',
     estado: 'SP',
-    idade: 5
+    idade: 5,
   }
 }
 
@@ -36,25 +36,29 @@ function request4devs(requestType) {
         contentContainer.innerHTML = response
         return
       }
-      console.log(response)
+
+      const ul = document.createElement("ul")
+      ul.classList.add('list-group')
 
       for (const [key, value] of Object.entries(response[0])) {
-        const div = document.createElement("div")
-
         // content
-        const content = document.createElement("span");
-        content.innerHTML = `<strong>${key}:</strong> ${value}  `;
-        div.appendChild(content);
+        const li = document.createElement("li");
+        li.classList.add('list-grou-item', 'd-flex', 'justify-content-between', 'align-items-start')
+
+        const p = document.createElement("p")
+        p.innerHTML = `<strong>${key}:</strong> ${value}`;
+        li.appendChild(p)
 
         // copy
         const copyIcon = document.createElement("i");
         copyIcon.className = "fas fa-copy";
         copyIcon.style.cursor = "pointer";
         copyIcon.addEventListener("click", () => copyToClipboard(value));
-        div.appendChild(copyIcon);
+        li.appendChild(copyIcon);
 
-        contentContainer.appendChild(div);
+        ul.appendChild(li);
       }
+      contentContainer.appendChild(ul)
 
 
     }
