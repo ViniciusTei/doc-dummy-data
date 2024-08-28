@@ -36,6 +36,9 @@ function request4devs(requestType) {
         contentContainer.innerHTML = response
         return
       }
+      const entries = response[0]
+
+      localStorage.setItem('dddata', JSON.stringify(entries))
 
       const ul = document.createElement("ul")
       ul.classList.add('list-group')
@@ -59,8 +62,6 @@ function request4devs(requestType) {
         ul.appendChild(li);
       }
       contentContainer.appendChild(ul)
-
-
     }
   )
 }
@@ -117,3 +118,33 @@ async function handleGenerateButon() {
 personInput.addEventListener('change', handleCheckedValue)
 companyInput.addEventListener('change', handleCheckedValue)
 generateButton.addEventListener('click', handleGenerateButon)
+
+document.addEventListener('DOMContentLoaded', () => {
+  const metadata = localStorage.getItem('dddata')
+  if (metadata) {
+    const data = JSON.parse(metadata)
+    const contentContainer = document.getElementById("content-container");
+    const ul = document.createElement("ul")
+    ul.classList.add('list-group')
+
+    for (const [key, value] of Object.entries(data)) {
+      // content
+      const li = document.createElement("li");
+      li.classList.add('list-grou-item', 'd-flex', 'justify-content-between', 'align-items-start')
+
+      const p = document.createElement("p")
+      p.innerHTML = `<strong>${key}:</strong> ${value}`;
+      li.appendChild(p)
+
+      // copy
+      const copyIcon = document.createElement("i");
+      copyIcon.className = "fas fa-copy";
+      copyIcon.style.cursor = "pointer";
+      copyIcon.addEventListener("click", () => copyToClipboard(value));
+      li.appendChild(copyIcon);
+
+      ul.appendChild(li);
+    }
+    contentContainer.appendChild(ul)
+  }
+});
