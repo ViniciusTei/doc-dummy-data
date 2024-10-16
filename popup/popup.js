@@ -20,6 +20,8 @@ const defaultParams = {
   }
 }
 
+const LOCAL_STORAGE_DATA = 'dddata'
+
 const toUrlEncoded = obj => Object.keys(obj).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&');
 
 function request4devs(requestType) {
@@ -33,13 +35,15 @@ function request4devs(requestType) {
     response => {
       const contentContainer = document.getElementById("content-container");
       contentContainer.innerHTML = ''
-      if (!isJsonString(JSON.stringify(response))) {
+
+      if (isHtml(response)) {
+        localStorage.setItem(LOCAL_STORAGE_DATA, response)
         contentContainer.innerHTML = response
         return
       }
-      const entries = response[0]
 
-      localStorage.setItem('dddata', JSON.stringify(entries))
+      const entries = response[0]
+      localStorage.setItem(LOCAL_STORAGE_DATA, JSON.stringify(entries))
 
       const ul = document.createElement("ul")
       ul.classList.add('list-group')
@@ -65,6 +69,10 @@ function request4devs(requestType) {
       contentContainer.appendChild(ul)
     }
   )
+}
+
+function isHtml(str) {
+  return /<[a-z][\s\S]*>/i.test(str);
 }
 
 function isJsonString(str) {
@@ -121,10 +129,17 @@ companyInput.addEventListener('change', handleCheckedValue)
 generateButton.addEventListener('click', handleGenerateButon)
 
 document.addEventListener('DOMContentLoaded', () => {
-  const metadata = localStorage.getItem('dddata')
+  const contentContainer = document.getElementById("content-container");
+  const metadata = localStorage.getItem(LOCAL_STORAGE_DATA)
+  if (isHtml(metadata)) {
+    companyInput.checked = true
+    personInput.checked = false
+    contentContainer.innerHTML = metadata
+    return
+  }
+
   if (metadata) {
     const data = JSON.parse(metadata)
-    const contentContainer = document.getElementById("content-container");
     const ul = document.createElement("ul")
     ul.classList.add('list-group')
 
@@ -132,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // content
       const li = document.createElement("li");
       li.classList.add('list-grou-item', 'd-flex', 'justify-content-between', 'align-items-start')
-
       const p = document.createElement("p")
       p.innerHTML = `<strong>${key}:</strong> ${value}`;
       li.appendChild(p)
