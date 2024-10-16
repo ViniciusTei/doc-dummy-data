@@ -32,6 +32,7 @@ function request4devs(requestType) {
   },
     response => {
       const contentContainer = document.getElementById("content-container");
+      contentContainer.innerHTML = ''
       if (!isJsonString(JSON.stringify(response))) {
         contentContainer.innerHTML = response
         return

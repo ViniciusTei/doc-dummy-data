@@ -15,17 +15,6 @@
   "background": {
     "service_worker": "scripts/background_script.js"
   },
-  "content_scripts": [
-    {
-      "js": ["scripts/content_script.js"],
-      "matches": [
-        "https://developer.chrome.com/docs/extensions/*",
-        "https://developer.chrome.com/docs/webstore/*",
-        "https://app.casamentonobrasil.com.br/*",
-        "http://localhost:5000/*"
-      ]
-    }
-  ],
   "action": {
     "default_popup": "popup/popup.html",
     "default_action": "assets/DocDummyDataIcon.png"
